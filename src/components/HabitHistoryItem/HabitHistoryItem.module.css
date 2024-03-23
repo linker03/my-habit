@@ -1,0 +1,8 @@
+@import url('../../style/vars.css');
+
+.root {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background-color: var(--main-color);
+}
