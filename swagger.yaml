@@ -1,0 +1,250 @@
+openapi: '3.0.3'
+info:
+  version: '1.0.0'
+  title: 'Habit Tracker API'
+paths:
+  /api/v1/habits:
+    get:
+      description: 'Get a list of all habits'
+      tags:
+        - 'Habits CRUD'
+      responses:
+        '200':
+          $ref: '#/components/responses/AllHabitsResponse'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+    post:
+      description: 'Create a new habit'
+      tags:
+        - 'Habits CRUD'
+      requestBody:
+        $ref: '#/components/requestBodies/HabitCreateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AllHabitsResponse'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '400':
+          $ref: '#/components/responses/400HabitCreateError'
+  /api/v1/habits/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    put:
+      description: 'Update an existing habit'
+      tags:
+        - 'Habits CRUD'
+      requestBody:
+        $ref: '#/components/requestBodies/HabitUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AllHabitsResponse'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+    delete:
+      description: 'Delete a habit'
+      tags:
+        - 'Habits CRUD'
+      responses:
+        '200':
+          $ref: '#/components/responses/AllHabitsResponse'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+  /api/v1/habits/{id}/logs:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    post:
+      description: 'Create a new log for a habit'
+      tags:
+        - 'Habit confirm'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                  example: '2024-05-26'
+      responses:
+        '200':
+          $ref: '#/components/responses/AllHabitsResponse'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+components:
+  responses:
+    400HabitCreateError:
+      description: 'Habit create error'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: 'string'
+                example: 'Not all required fields fill'
+    404NotFound:
+      description: 'Not found error'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: 'string'
+                example: 'Habit not found'
+    403Forbidden:
+      description: 'Authorization error'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: 'string'
+                example: 'Authorization error'
+    AllHabitsResponse:
+      description: 'List of all habits with names, descriptions, icons, and colors'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Habit'
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBodies:
+    HabitCreateRequest:
+      description: 'Create habit request body'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'Morning Exercise'
+              description:
+                type: string
+                example: '30 minutes of yoga in the morning'
+              completion_frequency:
+                type: integer
+                example: 1
+              icon:
+                $ref: '#/components/schemas/Icon'
+              color:
+                $ref: '#/components/schemas/Color'
+            required:
+              - name
+              - completion_frequency
+              - icon
+              - color
+    HabitUpdateRequest:
+      required: false
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'Morning Exercise'
+              description:
+                type: string
+                example: '30 minutes of yoga in the morning'
+              completion_frequency:
+                type: integer
+                example: 1
+              icon:
+                $ref: '#/components/schemas/Icon'
+              color:
+                $ref: '#/components/schemas/Color'
+  schemas:
+    Habit:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 'Morning Exercise'
+        description:
+          type: string
+          example: '30 minutes of yoga in the morning'
+        completion_frequency:
+          type: integer
+          example: 1
+        completion_count:
+          type: integer
+          example: 1
+        icon:
+          $ref: '#/components/schemas/Icon'
+        color:
+          $ref: '#/components/schemas/Color'
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/HabitHistoryItem'
+      required:
+        - id
+        - name
+        - description
+        - interval
+        - completion_frequency
+        - completion_count
+        - icon
+        - color
+        - history
+    HabitHistoryItem:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+          example: 1
+        date:
+          type: string
+          format: date
+          example: '2024-05-26'
+        completion_count:
+          type: number
+          format: int64
+          example: 2
+        completion_frequency:
+          type: number
+          format: int64
+          example: 2
+      required:
+        - id
+        - date
+        - completion_count
+        - completion_frequency
+
+    Icon:
+      type: string
+      enum:
+        - star
+        - heart
+        - check
+
+    Color:
+      type: string
+      enum:
+        - red
+        - blue
+        - green
+        - yellow
