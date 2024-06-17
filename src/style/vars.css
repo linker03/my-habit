@@ -4,4 +4,7 @@
   --main-color-opaque: #2bbc8a20;
   --text: #c9cacc;
   --panel-back: #1d1f21;
+  --habit-gap: 4px;
+  --padding-md: 16px;
+  --habit-bottom-side-height: calc(70px + (6 * var(--habit-gap)));
 }

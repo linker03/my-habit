@@ -24,7 +24,11 @@
 }
 
 .bottomSide {
-  display: grid;
-  gap: 4px;
-  grid-template-columns: repeat(auto-fill, 10px);
+  display: flex;
+  flex-direction: column-reverse;
+  max-height: var(--habit-bottom-side-height);
+  gap: var(--habit-gap);
+  flex-wrap: wrap-reverse;
+  justify-items: flex-end;
+  align-items: flex-end;
 }

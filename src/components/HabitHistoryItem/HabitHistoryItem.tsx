@@ -1,8 +1,8 @@
-import { HabitHistory } from '../../types/HabitHistory';
+import { HabitHistoryItem as HabitHistoryItemType } from '../../api/generatedTypes';
 import styles from './HabitHistoryItem.module.css';
 
 interface HabitHistoryItemProps {
-  habitHistoryElement: HabitHistory;
+  habitHistoryElement: HabitHistoryItemType;
 }
 
 export const HabitHistoryItem = ({
@@ -11,7 +11,14 @@ export const HabitHistoryItem = ({
   return (
     <div
       className={styles.root}
-      style={{ opacity: habitHistoryElement.isDone ? 1 : 0.5 }}
+      style={{
+        opacity:
+          calculateOpacity(
+            habitHistoryElement.completion_count,
+            habitHistoryElement.completion_frequency
+          ) + 0.1,
+      }}
     />
   );
 };
+const calculateOpacity = (done: number, total: number) => done / total;
