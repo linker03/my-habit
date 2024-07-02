@@ -3,6 +3,7 @@ import './style/reset.css';
 import './style/core.css';
 import { Habit } from 'components/Habit';
 import { useEffect, useState } from 'react';
+import { Header } from 'components/Header';
 
 function App() {
   const [windowWidth, setWindowWidth] = useState(window?.innerWidth || 0);
@@ -15,6 +16,7 @@ function App() {
   }, []);
   return (
     <Wrapper>
+      <Header />
       <Habit elementsCount={calculateElementsCount(windowWidth) * 7} />
     </Wrapper>
   );
@@ -36,3 +38,6 @@ const calculateElementsCount = (windowWidth: number) => {
 };
 
 // пишем фронт, просто визуальную часть, без запросов к апи, только интерфейс.На моках
+// сделать форму добавления новой привычки
+// Сделать модалку с подробностями
+// Сделать хэдэр

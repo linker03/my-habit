@@ -54,7 +54,7 @@ const prepareData = (
 
   const habitHistoryExtra = extraElements.concat(habitHistoryData);
   const trimmedHabitHistory = habitHistoryExtra.filter(
-    (item, index) => index < elementsCount
+    (_item, index) => index < elementsCount
   );
 
   return trimmedHabitHistory;
