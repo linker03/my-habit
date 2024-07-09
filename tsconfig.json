@@ -24,7 +24,8 @@
     "paths": {
       "components/*": ["./src/components/*"],
       "mock/*": ["./src/mock/*"],
-      "style/*": ["./src/style/*"]
+      "style/*": ["./src/style/*"],
+      "hooks/*": ["./src/hooks/*"]
     }
   },
   "include": ["src"],

@@ -1,0 +1,11 @@
+@import url('../../style//vars.css');
+
+.root {
+  padding: 0 calc((100% - var(--max-content-width)) / 2);
+  background-color: black;
+  height: 100%;
+}
+
+.container {
+  padding: 16px;
+}

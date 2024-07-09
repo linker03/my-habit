@@ -4,9 +4,18 @@ import './style/core.css';
 import { Habit } from 'components/Habit';
 import { useEffect, useState } from 'react';
 import { Header } from 'components/Header';
+import { useToggle } from './hooks/useToggle';
+import { CreateNewHabitModal } from 'components/CreateNewHabitModal';
 
 function App() {
   const [windowWidth, setWindowWidth] = useState(window?.innerWidth || 0);
+
+  const {
+    open: openCreateHabitModal,
+    close: closeCreateHabitModal,
+    isOpen: isCreateHabitModalOpen,
+  } = useToggle();
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window?.innerWidth ?? 0);
@@ -14,10 +23,15 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
   return (
     <Wrapper>
-      <Header />
+      <Header addButtonHandler={openCreateHabitModal} />
       <Habit elementsCount={calculateElementsCount(windowWidth) * 7} />
+      <CreateNewHabitModal
+        isOpen={isCreateHabitModalOpen}
+        close={closeCreateHabitModal}
+      />
     </Wrapper>
   );
 }
@@ -40,4 +54,3 @@ const calculateElementsCount = (windowWidth: number) => {
 // пишем фронт, просто визуальную часть, без запросов к апи, только интерфейс.На моках
 // сделать форму добавления новой привычки
 // Сделать модалку с подробностями
-// Сделать хэдэр
