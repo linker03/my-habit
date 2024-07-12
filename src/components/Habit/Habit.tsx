@@ -1,7 +1,7 @@
 import habitHistoryData from 'mock/habitHistoryMock.json';
 import styles from './Habit.module.css';
 import { HabitHistoryItem } from 'components/HabitHistoryItem';
-import { IconButton } from 'components/ui-kit/IconButton';
+import { Button } from 'components/ui-kit/Button';
 import { HabitHistoryItem as HabitHistoryItemType } from '../../api/generatedTypes';
 import { generateHabitHistoryByQuantity, getDateAfterDays } from 'mock/helpers';
 
@@ -15,13 +15,13 @@ export const Habit = ({ elementsCount }: HabitProps) => {
   return (
     <div className={styles.root}>
       <div className={styles.topSide}>
-        <IconButton>
+        <Button>
           <img src="icons/shopping-cart.svg" alt="" />
-        </IconButton>
+        </Button>
         <h4 className={styles.heading}>Habit</h4>
-        <IconButton className={styles.doneButton}>
+        <Button className={styles.doneButton}>
           <img src="icons/plus.svg" alt="" />
-        </IconButton>
+        </Button>
       </div>
       <div className={styles.bottomSide}>
         {elementsToDisplay.map((habitHistoryElement) => (

@@ -1,0 +1,13 @@
+.root {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.submitButton {
+  margin-left: auto;
+}
+.title {
+  margin-left: 8px;
+  color: var(--text);
+}

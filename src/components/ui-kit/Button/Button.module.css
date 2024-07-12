@@ -1,0 +1,26 @@
+@import url('style/vars.css');
+
+.root {
+  border-radius: 10px;
+  transition: transform 0.3s ease-out;
+}
+
+.filled {
+  background-color: var(--main-color-opaque);
+}
+
+.middle {
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+}
+
+.large {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+}
+
+.root:active:not(:disabled) {
+  transform: scale(0.9);
+}
