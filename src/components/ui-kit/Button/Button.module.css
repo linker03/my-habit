@@ -3,6 +3,7 @@
 .root {
   border-radius: 10px;
   transition: transform 0.3s ease-out;
+  color: var(--text);
 }
 
 .filled {

@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { InputNumber } from 'components/InputNumber';
 import { IconsCollection } from 'components/IconsCollection';
 import { ColorsCollection } from 'components/ColorsCollection';
-import { Button } from 'components/ui-kit/Button';
 
 interface CreateNewHabitModalProps {
   isOpen: boolean;
@@ -28,8 +27,8 @@ export const CreateNewHabitModal = ({
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [numberOfRepeat, setNumberOfRepeat] = useState(0);
-  const [currentIcon, setCurrentIcon] = useState('');
-  const [currentColor, setCurrentColor] = useState('');
+  const [icon, setIcon] = useState('');
+  const [color, setColor] = useState('');
 
   const increment = () => {
     setNumberOfRepeat((state) => state + 1);
@@ -40,11 +39,11 @@ export const CreateNewHabitModal = ({
   };
 
   const onIconChange = (value: string) => {
-    setCurrentIcon(value);
+    setIcon(value);
   };
 
   const onColorChange = (value: string) => {
-    setCurrentColor(value);
+    setColor(value);
   };
 
   const onSubmit = () => {
@@ -52,10 +51,11 @@ export const CreateNewHabitModal = ({
       name,
       description,
       numberOfRepeat,
-      icon: currentIcon,
-      color: currentColor,
+      icon,
+      color,
     };
     console.log(values);
+    close();
   };
 
   return (
@@ -65,7 +65,7 @@ export const CreateNewHabitModal = ({
           <ModalHeader
             title="Новая привычка"
             closeHandler={close}
-            submitHandler={() => undefined}
+            submitHandler={onSubmit}
           />
           <Input
             label="Имя"
@@ -90,7 +90,6 @@ export const CreateNewHabitModal = ({
           />
           <IconsCollection onChange={onIconChange} />
           <ColorsCollection onChange={onColorChange} />
-          <Button onClick={onSubmit}>Создать</Button>
         </div>
       </div>
     </ModalContainer>
