@@ -2,7 +2,7 @@ import styles from './Input.module.css';
 import clcx from 'clsx';
 
 interface InputProps {
-  children: React.ReactNode;
+  label: string;
   value: string;
   onChange(e: React.ChangeEvent<HTMLInputElement>): void;
   className?: string;
@@ -10,7 +10,7 @@ interface InputProps {
 }
 
 export const Input = ({
-  children,
+  label,
   value,
   onChange,
   className = '',
@@ -18,7 +18,7 @@ export const Input = ({
 }: InputProps) => {
   return (
     <label className={clcx(styles.root, className)}>
-      {children}
+      {label}
       <input
         className={clcx(styles.input, inputClassName)}
         value={value}

@@ -1,0 +1,1 @@
+export { ColorsCollection } from "./ColorsCollection";

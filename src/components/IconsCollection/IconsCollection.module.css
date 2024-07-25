@@ -1,0 +1,10 @@
+.button {
+  background-color: var(--input-back);
+  padding: 6px;
+  width: 40px;
+  height: 40px;
+}
+
+.active {
+  border: 2px solid var(--text);
+}
