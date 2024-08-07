@@ -1,18 +1,16 @@
 import { ButtonsCollection } from 'components/ButtonsCollection';
 import styles from './IconsCollection.module.css';
 import { Button } from 'components/ui-kit/Button';
-import { useState } from 'react';
 import clsx from 'clsx';
+import { icons } from '../../helpers/icons';
 
 interface IconsCollectionProps {
+  value: string;
   onChange(value: string): void;
 }
 
-export const IconsCollection = ({ onChange }: IconsCollectionProps) => {
-  const [currentIcon, setCurrentIcon] = useState('bed');
-
+export const IconsCollection = ({ onChange, value }: IconsCollectionProps) => {
   const onButtonClick = (iconName: string) => () => {
-    setCurrentIcon(iconName);
     onChange(iconName);
   };
 
@@ -21,7 +19,7 @@ export const IconsCollection = ({ onChange }: IconsCollectionProps) => {
       {icons.map((item) => (
         <Button
           className={clsx(styles.button, {
-            [styles.active]: currentIcon === item,
+            [styles.active]: value === item,
           })}
           onClick={onButtonClick(item)}
           data-icon={item}
@@ -33,25 +31,3 @@ export const IconsCollection = ({ onChange }: IconsCollectionProps) => {
     </ButtonsCollection>
   );
 };
-
-const icons = [
-  'bar-chart',
-  'bed',
-  'bike',
-  'calendar',
-  'checklist',
-  'close',
-  'done',
-  'edit',
-  'fitness-center',
-  'flight',
-  'hiking',
-  'medication',
-  'paid',
-  'plus',
-  'pool',
-  'self-improvement',
-  'shopping-bag',
-  'shopping-cart',
-  'sports-gymnastics',
-];

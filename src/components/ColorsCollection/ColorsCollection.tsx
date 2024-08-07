@@ -1,18 +1,19 @@
 import clsx from 'clsx';
 import { ButtonsCollection } from 'components/ButtonsCollection';
 import { Button } from 'components/ui-kit/Button';
-import { useState } from 'react';
 import styles from './ColorsCollection.module.css';
+import { colors } from '../../helpers/colors';
 
 interface ColorsCollectionProps {
+  value: string;
   onChange(value: string): void;
 }
 
-export const ColorsCollection = ({ onChange }: ColorsCollectionProps) => {
-  const [currentColor, setCurrentColor] = useState('#00D49D');
-
+export const ColorsCollection = ({
+  onChange,
+  value,
+}: ColorsCollectionProps) => {
   const onButtonClick = (iconName: string) => () => {
-    setCurrentColor(iconName);
     onChange(iconName);
   };
   return (
@@ -20,7 +21,7 @@ export const ColorsCollection = ({ onChange }: ColorsCollectionProps) => {
       {colors.map((item) => (
         <Button
           className={clsx(styles.button, {
-            [styles.active]: currentColor === item,
+            [styles.active]: value === item,
           })}
           onClick={onButtonClick(item)}
           data-icon={item}
@@ -31,15 +32,3 @@ export const ColorsCollection = ({ onChange }: ColorsCollectionProps) => {
     </ButtonsCollection>
   );
 };
-
-const colors = [
-  '#00D49D',
-  '#61ACF5',
-  '#FC79B4',
-  '#F178F2',
-  '#C184F3',
-  '#FF6971',
-  '#FF8C49',
-  '#FFBB43',
-  '#F279F3',
-];

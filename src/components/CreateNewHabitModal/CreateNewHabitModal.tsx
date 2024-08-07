@@ -6,10 +6,13 @@ import { useState } from 'react';
 import { InputNumber } from 'components/InputNumber';
 import { IconsCollection } from 'components/IconsCollection';
 import { ColorsCollection } from 'components/ColorsCollection';
+import { icons } from '../../helpers/icons';
+import { colors } from '../../helpers/colors';
 
 interface CreateNewHabitModalProps {
   isOpen: boolean;
   close(): void;
+  defaultValues?: HabitCreateRequest;
 }
 
 type HabitCreateRequest = {
@@ -23,12 +26,17 @@ type HabitCreateRequest = {
 export const CreateNewHabitModal = ({
   isOpen,
   close,
+  defaultValues,
 }: CreateNewHabitModalProps) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [numberOfRepeat, setNumberOfRepeat] = useState(0);
-  const [icon, setIcon] = useState('');
-  const [color, setColor] = useState('');
+  const [name, setName] = useState(defaultValues?.name || '');
+  const [description, setDescription] = useState(
+    defaultValues?.description || ''
+  );
+  const [numberOfRepeat, setNumberOfRepeat] = useState(
+    defaultValues?.numberOfRepeat || 0
+  );
+  const [icon, setIcon] = useState(defaultValues?.icon || icons[0]);
+  const [color, setColor] = useState(defaultValues?.color || colors[0]);
 
   const increment = () => {
     setNumberOfRepeat((state) => state + 1);
@@ -88,8 +96,8 @@ export const CreateNewHabitModal = ({
             decrement={decrement}
             label="Выполнений в день"
           />
-          <IconsCollection onChange={onIconChange} />
-          <ColorsCollection onChange={onColorChange} />
+          <IconsCollection onChange={onIconChange} value={icon} />
+          <ColorsCollection onChange={onColorChange} value={color} />
         </div>
       </div>
     </ModalContainer>

@@ -7,15 +7,16 @@ import { generateHabitHistoryByQuantity, getDateAfterDays } from 'mock/helpers';
 
 interface HabitProps {
   elementsCount: number;
+  openHabitDetailsModal(): void;
 }
 
-export const Habit = ({ elementsCount }: HabitProps) => {
+export const Habit = ({ elementsCount, openHabitDetailsModal }: HabitProps) => {
   const elementsToDisplay = prepareData(habitHistoryData, elementsCount);
 
   return (
     <div className={styles.root}>
       <div className={styles.topSide}>
-        <Button>
+        <Button onClick={openHabitDetailsModal}>
           <img src="icons/shopping-cart.svg" alt="" />
         </Button>
         <h4 className={styles.heading}>Habit</h4>

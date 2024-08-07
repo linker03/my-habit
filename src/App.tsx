@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Header } from 'components/Header';
 import { useToggle } from './hooks/useToggle';
 import { CreateNewHabitModal } from 'components/CreateNewHabitModal';
+import { HabitDetailsModal } from 'components/HabitDetailsModal';
 
 function App() {
   const [windowWidth, setWindowWidth] = useState(window?.innerWidth || 0);
@@ -14,6 +15,12 @@ function App() {
     open: openCreateHabitModal,
     close: closeCreateHabitModal,
     isOpen: isCreateHabitModalOpen,
+  } = useToggle();
+
+  const {
+    open: openHabitDetailsModal,
+    close: closeHabitDetailsModal,
+    isOpen: isHabitDetailsModalOpen,
   } = useToggle();
 
   useEffect(() => {
@@ -27,10 +34,17 @@ function App() {
   return (
     <Wrapper>
       <Header addButtonHandler={openCreateHabitModal} />
-      <Habit elementsCount={calculateElementsCount(windowWidth) * 7} />
+      <Habit
+        elementsCount={calculateElementsCount(windowWidth) * 7}
+        openHabitDetailsModal={openHabitDetailsModal}
+      />
       <CreateNewHabitModal
         isOpen={isCreateHabitModalOpen}
         close={closeCreateHabitModal}
+      />
+      <HabitDetailsModal
+        isOpen={isHabitDetailsModalOpen}
+        close={closeHabitDetailsModal}
       />
     </Wrapper>
   );
@@ -53,3 +67,5 @@ const calculateElementsCount = (windowWidth: number) => {
 
 // пишем фронт, просто визуальную часть, без запросов к апи, только интерфейс.На моках
 // Сделать модалку с подробностями
+// Сделать валидацию полей
+// По идее на этом фронтовая часть будет завершена.
