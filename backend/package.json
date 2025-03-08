@@ -1,0 +1,14 @@
+{
+  "name": "my-habit-backend",
+  "version": "0.1.0",
+  "description": "Backend and DB for My habit app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prisma": "^6.4.1"
+  }
+}
