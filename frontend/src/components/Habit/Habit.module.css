@@ -1,0 +1,34 @@
+@import url('../../style/vars.css');
+
+.root {
+  background-color: var(--panel-back);
+  width: 100%;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.topSide {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.doneButton {
+  margin-left: auto;
+}
+
+.heading {
+  font-size: 18px;
+  color: var(--text);
+  margin-left: 8px;
+}
+
+.bottomSide {
+  display: flex;
+  flex-direction: column-reverse;
+  max-height: var(--habit-bottom-side-height);
+  gap: var(--habit-gap);
+  flex-wrap: wrap-reverse;
+  justify-items: flex-end;
+  align-items: flex-end;
+}

@@ -1,0 +1,1 @@
+export { IconsCollection } from "./IconsCollection";

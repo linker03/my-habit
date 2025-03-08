@@ -1,0 +1,12 @@
+.root {
+  color: var(--text);
+  padding: 8px;
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconButton {
+  background-color: transparent;
+}
