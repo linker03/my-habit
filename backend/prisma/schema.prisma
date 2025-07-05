@@ -14,7 +14,7 @@ model Habit {
    id    Int     @id @default(autoincrement())
    name  String  
    description   String?  
-   completion_frequency  Int
+   completionFrequency  Int
    icon   String
    color   String
    history  HabitLog[]
@@ -22,8 +22,8 @@ model Habit {
 
 model HabitLog {
   id    Int     @id @default(autoincrement())
-  completion_date  DateTime
-  completion_count Int
+  completionDate  DateTime
+  completionCount Int
 
   habit Habit @relation(fields: [habitId], references: [id])
   habitId Int
