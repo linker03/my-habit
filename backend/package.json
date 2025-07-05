@@ -9,6 +9,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^24.0.7",
     "prisma": "^6.4.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.10.1",
+    "express": "^5.1.0"
   }
 }

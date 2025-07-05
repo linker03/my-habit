@@ -7,5 +7,24 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url = "file:./dev.db"
+}
+
+model Habit {
+   id    Int     @id @default(autoincrement())
+   name  String  
+   description   String?  
+   completion_frequency  Int
+   icon   String
+   color   String
+   history  HabitLog[]
+}
+
+model HabitLog {
+  id    Int     @id @default(autoincrement())
+  completion_date  DateTime
+  completion_count Int
+
+  habit Habit @relation(fields: [habitId], references: [id])
+  habitId Int
 }
