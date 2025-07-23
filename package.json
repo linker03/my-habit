@@ -1,0 +1,11 @@
+{
+  "name": "my-habit-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "front": "npm run dev --prefix frontend",
+    "back": "npm run dev --prefix backend",
+    "generate": "openapi --input  ./swagger.yaml --output src/api/generatedTypes --exportCore false --exportServices false --indent 2 && yarn prettier --write ./src/api/generatedTypes/"
+  }
+}
