@@ -4,11 +4,30 @@
   "description": "Backend and DB for My habit app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "migrate": "npx prisma migrate dev"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "prisma": "^6.4.1"
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.7",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.4.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.10.1",
+    "@types/cors": "^2.8.19",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
