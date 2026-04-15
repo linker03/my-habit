@@ -19,8 +19,8 @@ const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
   "clientVersion": "7.7.0",
   "engineVersion": "75cbdc1eb7150937890ad5465d861175c6624711",
-  "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Habit {\n  id                  Int        @id @default(autoincrement())\n  name                String\n  description         String?\n  completionFrequency Int\n  icon                String\n  color               String\n  history             HabitLog[]\n}\n\nmodel HabitLog {\n  id              Int      @id @default(autoincrement())\n  completionDate  DateTime\n  completionCount Int\n\n  habit   Habit @relation(fields: [habitId], references: [id])\n  habitId Int\n}\n",
+  "activeProvider": "sqlite",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n}\n\nmodel Habit {\n  id                  Int        @id @default(autoincrement())\n  name                String\n  description         String?\n  completionFrequency Int\n  icon                String\n  color               String\n  history             HabitLog[]\n}\n\nmodel HabitLog {\n  id              Int      @id @default(autoincrement())\n  completionDate  DateTime\n  completionCount Int\n\n  habit   Habit @relation(fields: [habitId], references: [id])\n  habitId Int\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -45,10 +45,10 @@ async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Modul
 }
 
 config.compilerWasm = {
-  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.mjs"),
+  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.sqlite.mjs"),
 
   getQueryCompilerWasmModule: async () => {
-    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.mjs")
+    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.sqlite.wasm-base64.mjs")
     return await decodeBase64AsWasm(wasm)
   },
 

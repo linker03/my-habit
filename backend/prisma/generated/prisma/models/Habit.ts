@@ -1219,7 +1219,6 @@ export type HabitCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * The data used to create many Habits.
    */
   data: Prisma.HabitCreateManyInput | Prisma.HabitCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1238,7 +1237,6 @@ export type HabitCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * The data used to create many Habits.
    */
   data: Prisma.HabitCreateManyInput | Prisma.HabitCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**

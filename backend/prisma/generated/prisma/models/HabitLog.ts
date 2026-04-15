@@ -412,7 +412,6 @@ export type HabitLogCreateOrConnectWithoutHabitInput = {
 
 export type HabitLogCreateManyHabitInputEnvelope = {
   data: Prisma.HabitLogCreateManyHabitInput | Prisma.HabitLogCreateManyHabitInput[]
-  skipDuplicates?: boolean
 }
 
 export type HabitLogUpsertWithWhereUniqueWithoutHabitInput = {
@@ -1180,7 +1179,6 @@ export type HabitLogCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data used to create many HabitLogs.
    */
   data: Prisma.HabitLogCreateManyInput | Prisma.HabitLogCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1199,7 +1197,6 @@ export type HabitLogCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * The data used to create many HabitLogs.
    */
   data: Prisma.HabitLogCreateManyInput | Prisma.HabitLogCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
