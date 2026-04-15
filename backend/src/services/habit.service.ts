@@ -1,6 +1,13 @@
-import { Habit, HabitLog } from '@prisma/client';
 import { habitRepository } from '../repositories/habit.repository';
-import { NotFoundError } from '@/errors';
+import { BadRequestError, NotFoundError } from '@/errors';
+import { startOfDay } from '@/helpers/startOfDay';
+import { completionRepository } from '@/repositories/completion.repository';
+import { validatePeriod } from '@/helpers/validatePeriod';
+import { HabitCompletion, Habit } from '@/prisma/generated/prisma/client';
+
+export type HabitWithDays = Habit & {
+  days: HabitCompletion[];
+};
 
 export const habitService = {
   async getAllHabits(): Promise<Habit[]> {
@@ -13,7 +20,7 @@ export const habitService = {
     return habit;
   },
 
-  async createHabit(data: Omit<Habit, 'id'>): Promise<Habit> {
+  async createHabit(data: Omit<Habit, 'id' | 'createdAt'>): Promise<Habit> {
     return habitRepository.create(data);
   },
 
@@ -23,11 +30,85 @@ export const habitService = {
   },
 
   async deleteHabit(id: number): Promise<void> {
+    await habitService.getHabitById(id);
+
+    await completionRepository.deleteByHabit(id);
     await habitRepository.delete(id);
   },
 
-  async addHabitLog(habitId: number, date: Date): Promise<HabitLog> {
+  async getHabitsWithCompletions(
+    from: Date,
+    to: Date,
+  ): Promise<HabitWithDays[]> {
+    validatePeriod(from, to);
+
+    const habits = await habitRepository.findAll();
+
+    if (habits.length === 0) return [];
+
+    const habitIds = habits.map((h) => h.id);
+
+    const completions = await completionRepository.findByHabitsAndPeriod(
+      habitIds,
+      from,
+      to,
+    );
+
+    // группируем completions по привычке
+    const completionsMap = new Map<number, HabitCompletion[]>();
+
+    for (const c of completions) {
+      const arr = completionsMap.get(c.habitId) ?? [];
+      arr.push(c);
+      completionsMap.set(c.habitId, arr);
+    }
+
+    // формируем DTO для фронта
+    return habits.map((habit) => ({
+      ...habit,
+      days: completionsMap.get(habit.id) ?? [],
+    }));
+  },
+
+  async getHabitCompletions(habitId: number, from: Date, to: Date) {
+    validatePeriod(from, to);
+
     await habitService.getHabitById(habitId);
-    return habitRepository.addLog(habitId, date, 1);
+
+    return completionRepository.findByHabitAndPeriod(habitId, from, to);
+  },
+
+  async setToday(habitId: number, value: number) {
+    if (value < 0) throw new BadRequestError('Value cannot be negative');
+
+    const habit = await habitRepository.findById(habitId);
+
+    if (!habit) throw new NotFoundError('Habit not found');
+
+    const today = startOfDay(new Date());
+
+    return completionRepository.upsertCompletion(
+      habitId,
+      today,
+      habit.frequency,
+      value,
+    );
+  },
+
+  async setCompletionForDate(habitId: number, date: Date, value: number) {
+    if (value < 0) throw new BadRequestError('Value cannot be negative');
+
+    const habit = await habitRepository.findById(habitId);
+
+    if (!habit) throw new NotFoundError('Habit not found');
+
+    const normalizedDate = startOfDay(date);
+
+    return completionRepository.upsertCompletion(
+      habitId,
+      normalizedDate,
+      habit.frequency,
+      value,
+    );
   },
 };

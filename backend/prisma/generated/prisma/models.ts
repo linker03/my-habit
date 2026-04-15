@@ -9,5 +9,5 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Habit.js'
-export type * from './models/HabitLog.js'
+export type * from './models/HabitCompletion.js'
 export type * from './commonInputTypes.js'

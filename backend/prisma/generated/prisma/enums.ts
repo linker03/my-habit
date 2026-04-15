@@ -9,7 +9,10 @@
 * 🟢 You can import this file directly.
 */
 
+export const HabitInterval = {
+  DAY: 'DAY',
+  WEEK: 'WEEK',
+  MONTH: 'MONTH'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type HabitInterval = (typeof HabitInterval)[keyof typeof HabitInterval]
