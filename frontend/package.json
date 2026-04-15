@@ -11,7 +11,9 @@
     "generate": "openapi --input  ./swagger.yaml --output src/api/generatedTypes --exportCore false --exportServices false --indent 2 && yarn prettier --write ./src/api/generatedTypes/"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.83.0",
     "clsx": "^2.1.0",
+    "ky": "^1.8.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

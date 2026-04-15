@@ -1,6 +1,15 @@
-import { Habit, HabitLog, PrismaClient } from '@prisma/client';
+import {
+  Habit,
+  HabitLog,
+  PrismaClient,
+} from '@/prisma/generated/prisma/client';
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 
-const prisma = new PrismaClient();
+const adapter = new PrismaBetterSqlite3({
+  url: process.env.DATABASE_URL || 'file:./dev.db',
+});
+
+export const prisma = new PrismaClient({ adapter });
 
 export const habitRepository = {
   async findAll(): Promise<Habit[]> {
@@ -38,7 +47,7 @@ export const habitRepository = {
   async addLog(
     habitId: number,
     completionDate: Date,
-    completionCount: number
+    completionCount: number,
   ): Promise<HabitLog> {
     return prisma.habitLog.create({
       data: {
