@@ -7,6 +7,7 @@ import { Header } from 'components/Header';
 import { useToggle } from './hooks/useToggle';
 import { CreateNewHabitModal } from 'components/CreateNewHabitModal';
 import { HabitDetailsModal } from 'components/HabitDetailsModal';
+import { getAllHabits } from './api';
 
 function App() {
   const [windowWidth, setWindowWidth] = useState(window?.innerWidth || 0);
@@ -29,6 +30,10 @@ function App() {
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    getAllHabits();
   }, []);
 
   return (
