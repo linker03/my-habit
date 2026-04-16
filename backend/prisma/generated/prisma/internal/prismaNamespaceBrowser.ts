@@ -52,7 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Habit: 'Habit',
-  HabitLog: 'HabitLog'
+  HabitCompletion: 'HabitCompletion'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -62,9 +62,6 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  */
 
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
-  ReadUncommitted: 'ReadUncommitted',
-  ReadCommitted: 'ReadCommitted',
-  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 } as const)
 
@@ -75,22 +72,23 @@ export const HabitScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  completionFrequency: 'completionFrequency',
-  icon: 'icon',
-  color: 'color'
+  frequency: 'frequency',
+  interval: 'interval',
+  createdAt: 'createdAt'
 } as const
 
 export type HabitScalarFieldEnum = (typeof HabitScalarFieldEnum)[keyof typeof HabitScalarFieldEnum]
 
 
-export const HabitLogScalarFieldEnum = {
+export const HabitCompletionScalarFieldEnum = {
   id: 'id',
-  completionDate: 'completionDate',
-  completionCount: 'completionCount',
-  habitId: 'habitId'
+  habitId: 'habitId',
+  date: 'date',
+  targetCount: 'targetCount',
+  completedCount: 'completedCount'
 } as const
 
-export type HabitLogScalarFieldEnum = (typeof HabitLogScalarFieldEnum)[keyof typeof HabitLogScalarFieldEnum]
+export type HabitCompletionScalarFieldEnum = (typeof HabitCompletionScalarFieldEnum)[keyof typeof HabitCompletionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -99,14 +97,6 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-export const QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-} as const
-
-export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const NullsOrder = {

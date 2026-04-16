@@ -23,7 +23,7 @@ export * from './enums.js';
  */
 export type Habit = Prisma.HabitModel
 /**
- * Model HabitLog
+ * Model HabitCompletion
  * 
  */
-export type HabitLog = Prisma.HabitLogModel
+export type HabitCompletion = Prisma.HabitCompletionModel
