@@ -13,6 +13,8 @@ model Habit {
   description String?
   frequency   Int
   interval    HabitInterval
+  icon        String
+  color       String
   createdAt   DateTime          @default(now())
   completions HabitCompletion[]
 }

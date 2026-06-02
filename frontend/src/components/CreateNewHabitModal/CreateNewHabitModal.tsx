@@ -8,20 +8,14 @@ import { IconsCollection } from 'components/IconsCollection';
 import { ColorsCollection } from 'components/ColorsCollection';
 import { icons } from '../../helpers/icons';
 import { colors } from '../../helpers/colors';
+import { createHabit } from '../../api/habit';
+import { CreateHabitDTO } from '../../types/types';
 
 interface CreateNewHabitModalProps {
   isOpen: boolean;
   close(): void;
-  defaultValues?: HabitCreateRequest;
+  defaultValues?: CreateHabitDTO;
 }
-
-type HabitCreateRequest = {
-  name: string;
-  description: string;
-  numberOfRepeat: number;
-  icon: string;
-  color: string;
-};
 
 export const CreateNewHabitModal = ({
   isOpen,
@@ -30,20 +24,18 @@ export const CreateNewHabitModal = ({
 }: CreateNewHabitModalProps) => {
   const [name, setName] = useState(defaultValues?.name || '');
   const [description, setDescription] = useState(
-    defaultValues?.description || ''
+    defaultValues?.description || '',
   );
-  const [numberOfRepeat, setNumberOfRepeat] = useState(
-    defaultValues?.numberOfRepeat || 0
-  );
+  const [frequency, setFrequency] = useState(defaultValues?.frequency || 0);
   const [icon, setIcon] = useState(defaultValues?.icon || icons[0]);
   const [color, setColor] = useState(defaultValues?.color || colors[0]);
 
   const increment = () => {
-    setNumberOfRepeat((state) => state + 1);
+    setFrequency((state) => state + 1);
   };
 
   const decrement = () => {
-    setNumberOfRepeat((state) => state - 1);
+    setFrequency((state) => state - 1);
   };
 
   const onIconChange = (value: string) => {
@@ -55,15 +47,16 @@ export const CreateNewHabitModal = ({
   };
 
   const onSubmit = () => {
-    const values: HabitCreateRequest = {
+    const values: CreateHabitDTO = {
       name,
       description,
-      numberOfRepeat,
+      frequency,
       icon,
       color,
+      interval: 'DAY',
     };
     console.log(values);
-    close();
+    createHabit(values).then(() => close());
   };
 
   return (
@@ -91,7 +84,7 @@ export const CreateNewHabitModal = ({
           />
 
           <InputNumber
-            value={numberOfRepeat}
+            value={frequency}
             increment={increment}
             decrement={decrement}
             label="Выполнений в день"

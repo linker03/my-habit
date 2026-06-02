@@ -74,6 +74,8 @@ export const HabitScalarFieldEnum = {
   description: 'description',
   frequency: 'frequency',
   interval: 'interval',
+  icon: 'icon',
+  color: 'color',
   createdAt: 'createdAt'
 } as const
 

@@ -18,12 +18,12 @@ export function validateHabitCreate(data: any) {
     );
   }
 
-  if (!data.icon || !ICONS.includes(data.icon)) {
-    throw new BadRequestError(`Icon must be one of: ${ICONS.join(', ')}`);
+  if (!data.icon) {
+    throw new BadRequestError('Icon must be');
   }
 
-  if (!data.color || !COLORS.includes(data.color)) {
-    throw new BadRequestError(`Color must be one of: ${COLORS.join(', ')}`);
+  if (!data.color) {
+    throw new BadRequestError('Color must be');
   }
 
   return {

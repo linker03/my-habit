@@ -10,8 +10,8 @@ export type Habit = {
   id: ID;
   name: string;
   description: string | null;
-  icon: HabitIcon;
-  color: HabitColor;
+  icon: string;
+  color: string;
   frequency: number;
   createdAt: string; // ISO string для фронта
   interval: HabitInterval;
@@ -39,25 +39,10 @@ export type HabitWithCompletions = Habit & {
 };
 
 /**
- * ===== UI Helpers =====
- */
-
-export type HabitIcon = 'star' | 'heart' | 'check';
-
-export type HabitColor = 'red' | 'blue' | 'green' | 'yellow';
-
-/**
  * ===== API requests =====
  */
 
-export type CreateHabitDTO = {
-  name: string;
-  description?: string | null;
-  icon: HabitIcon;
-  color: HabitColor;
-  frequency: number;
-  interval: HabitInterval;
-};
+export type CreateHabitDTO = Omit<Habit, 'id' | 'createdAt'>;
 
 export type UpdateHabitDTO = Partial<CreateHabitDTO>;
 
