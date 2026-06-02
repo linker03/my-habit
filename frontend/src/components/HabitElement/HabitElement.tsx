@@ -1,23 +1,31 @@
 import habitHistoryData from 'mock/habitHistoryMock.json';
-import styles from './Habit.module.css';
+import styles from './HabitElement.module.css';
 import { HabitHistoryItem } from 'components/HabitHistoryItem';
 import { Button } from 'components/ui-kit/Button';
 import { HabitHistoryItem as HabitHistoryItemType } from '../../api/generatedTypes';
 import { generateHabitHistoryByQuantity, getDateAfterDays } from 'mock/helpers';
+import type { HabitWithCompletions } from '../../types/types';
+import { Icon } from 'components/ui-kit/Icon';
 
 interface HabitProps {
+  habit: HabitWithCompletions;
   elementsCount: number;
   openHabitDetailsModal(): void;
 }
 
-export const Habit = ({ elementsCount, openHabitDetailsModal }: HabitProps) => {
+export const HabitElement = ({
+  habit,
+  elementsCount,
+  openHabitDetailsModal,
+}: HabitProps) => {
   const elementsToDisplay = prepareData(habitHistoryData, elementsCount);
 
   return (
     <div className={styles.root}>
       <div className={styles.topSide}>
         <Button onClick={openHabitDetailsModal}>
-          <img src="icons/shopping-cart.svg" alt="" />
+          <Icon name={habit.icon} />
+          {/* <img src={`icons/${habit.icon}.svg`} alt="" /> */}
         </Button>
         <h4 className={styles.heading}>Habit</h4>
         <Button className={styles.doneButton}>
@@ -38,7 +46,7 @@ export const Habit = ({ elementsCount, openHabitDetailsModal }: HabitProps) => {
 
 const prepareData = (
   habitHistoryData: HabitHistoryItemType[],
-  elementsCount: number
+  elementsCount: number,
 ) => {
   const firstElement = habitHistoryData[0];
   const dayOfWeek = new Date(firstElement.date).getDay();
@@ -55,7 +63,7 @@ const prepareData = (
 
   const habitHistoryExtra = extraElements.concat(habitHistoryData);
   const trimmedHabitHistory = habitHistoryExtra.filter(
-    (_item, index) => index < elementsCount
+    (_item, index) => index < elementsCount,
   );
 
   return trimmedHabitHistory;

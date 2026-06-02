@@ -1,16 +1,18 @@
 import { Wrapper } from 'components/Wrapper';
 import './style/reset.css';
 import './style/core.css';
-import { Habit } from 'components/Habit';
 import { useEffect, useState } from 'react';
 import { Header } from 'components/Header';
 import { useToggle } from './hooks/useToggle';
 import { CreateNewHabitModal } from 'components/CreateNewHabitModal';
 import { HabitDetailsModal } from 'components/HabitDetailsModal';
-import { getAllHabits } from './api';
+import { getHabitsWithCompletions } from './api/habit';
+import { HabitElement } from 'components/HabitElement';
+import { HabitWithCompletions } from './types/types';
 
 function App() {
   const [windowWidth, setWindowWidth] = useState(window?.innerWidth || 0);
+  const [habits, setHabits] = useState<HabitWithCompletions[]>([]);
 
   const {
     open: openCreateHabitModal,
@@ -33,16 +35,30 @@ function App() {
   }, []);
 
   useEffect(() => {
-    getAllHabits();
+    const currentDate = new Date();
+    const currentISO = currentDate.toISOString();
+
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    const sixMonthsAgoISO = sixMonthsAgo.toISOString();
+
+    getHabitsWithCompletions(sixMonthsAgoISO, currentISO).then((res) => {
+      setHabits(res);
+    });
   }, []);
 
   return (
     <Wrapper>
       <Header addButtonHandler={openCreateHabitModal} />
-      <Habit
-        elementsCount={calculateElementsCount(windowWidth) * 7}
-        openHabitDetailsModal={openHabitDetailsModal}
-      />
+      {habits.map((habit) => (
+        <HabitElement
+          key={habit.id}
+          habit={habit}
+          elementsCount={calculateElementsCount(windowWidth) * 7}
+          openHabitDetailsModal={openHabitDetailsModal}
+        />
+      ))}
+
       <CreateNewHabitModal
         isOpen={isCreateHabitModalOpen}
         close={closeCreateHabitModal}
@@ -69,8 +85,3 @@ const calculateElementsCount = (windowWidth: number) => {
     ? elementsWithGapCount
     : elementsWithGapCount + 1;
 };
-
-// пишем фронт, просто визуальную часть, без запросов к апи, только интерфейс.На моках
-// Сделать модалку с подробностями
-// Сделать валидацию полей
-// По идее на этом фронтовая часть будет завершена.

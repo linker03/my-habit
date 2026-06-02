@@ -55,7 +55,6 @@ export const CreateNewHabitModal = ({
       color,
       interval: 'DAY',
     };
-    console.log(values);
     createHabit(values).then(() => close());
   };
 

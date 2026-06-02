@@ -1,0 +1,9 @@
+.icon {
+  flex-shrink: 0;
+  color: #29202e;
+}
+
+.small {
+  width: 16px;
+  height: 16px;
+}
