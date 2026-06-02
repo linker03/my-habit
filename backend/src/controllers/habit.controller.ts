@@ -5,6 +5,7 @@ import {
   validateHabitUpdate,
 } from '../validators/habit.validator';
 import { BadRequestError } from '@/errors';
+import { SetForDateBody, SetTodayBody } from '@/types';
 
 /** безопасный парсер id */
 function parseId(idParam?: string): number {
@@ -73,7 +74,10 @@ export const habitController = {
   },
 
   /** POST /habits/:id/today  body: { value: number } */
-  async setToday(req: Request, res: Response) {
+  async setToday(
+    req: Request<{ id: string }, {}, SetTodayBody>,
+    res: Response,
+  ) {
     const id = parseId(req.params.id);
     const { value } = req.body;
 
@@ -86,7 +90,10 @@ export const habitController = {
   },
 
   /** POST /habits/:id/date  body: { date: string, value: number } */
-  async setForDate(req: Request, res: Response) {
+  async setForDate(
+    req: Request<{ id: string }, {}, SetForDateBody>,
+    res: Response,
+  ) {
     const id = parseId(req.params.id);
     const { date, value } = req.body;
 

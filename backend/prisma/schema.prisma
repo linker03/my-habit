@@ -7,46 +7,25 @@ datasource db {
   provider = "sqlite"
 }
 
-// model Habit {
-//    id    Int     @id @default(autoincrement())
-//    name  String  
-//    description   String?  
-//    completionFrequency  Int
-//    icon   String
-//    color   String
-//    history  HabitLog[]
-// }
-
-// model HabitLog {
-//   id    Int     @id @default(autoincrement())
-//   completionDate  DateTime
-//   completionCount Int
-
-//   habit Habit @relation(fields: [habitId], references: [id])
-//   habitId Int
-// }
-
 model Habit {
-  id          Int      @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   name        String
   description String?
-  frequency   Int      // сколько раз за период (например 2 раза в день)
-  interval    HabitInterval 
-  createdAt   DateTime @default(now())
-
+  frequency   Int
+  interval    HabitInterval
+  createdAt   DateTime          @default(now())
   completions HabitCompletion[]
 }
 
 model HabitCompletion {
   id             Int      @id @default(autoincrement())
   habitId        Int
-  date           DateTime // всегда начало дня (00:00)
+  date           DateTime
   targetCount    Int
-  completedCount Int @default(0)
+  completedCount Int      @default(0)
+  habit          Habit    @relation(fields: [habitId], references: [id])
 
-  habit Habit @relation(fields: [habitId], references: [id])
-
-  @@unique([habitId, date]) // одна запись на день
+  @@unique([habitId, date])
 }
 
 enum HabitInterval {
