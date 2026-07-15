@@ -6,6 +6,7 @@ import { HabitHistoryItem as HabitHistoryItemType } from '../../api/generatedTyp
 import { generateHabitHistoryByQuantity, getDateAfterDays } from 'mock/helpers';
 import type { HabitWithCompletions } from '../../types/types';
 import { Icon } from 'components/ui-kit/Icon';
+import { setToday } from '../../api/habit';
 
 interface HabitProps {
   habit: HabitWithCompletions;
@@ -18,6 +19,10 @@ export const HabitElement = ({
   elementsCount,
   openHabitDetailsModal,
 }: HabitProps) => {
+  const onComplete = () => {
+    setToday(habit.id, { value: 1 });
+  };
+
   const elementsToDisplay = prepareData(habitHistoryData, elementsCount);
 
   return (
@@ -25,11 +30,10 @@ export const HabitElement = ({
       <div className={styles.topSide}>
         <Button onClick={openHabitDetailsModal}>
           <Icon name={habit.icon} />
-          {/* <img src={`icons/${habit.icon}.svg`} alt="" /> */}
         </Button>
-        <h4 className={styles.heading}>Habit</h4>
-        <Button className={styles.doneButton}>
-          <img src="icons/plus.svg" alt="" />
+        <h4 className={styles.heading}>{habit.name}</h4>
+        <Button className={styles.doneButton} onClick={onComplete}>
+          <Icon name="plus" />
         </Button>
       </div>
       <div className={styles.bottomSide}>
@@ -37,6 +41,7 @@ export const HabitElement = ({
           <HabitHistoryItem
             key={habitHistoryElement.id}
             habitHistoryElement={habitHistoryElement}
+            color={habit.color}
           />
         ))}
       </div>

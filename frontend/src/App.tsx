@@ -13,6 +13,7 @@ import { HabitWithCompletions } from './types/types';
 function App() {
   const [windowWidth, setWindowWidth] = useState(window?.innerWidth || 0);
   const [habits, setHabits] = useState<HabitWithCompletions[]>([]);
+  const [currentHabit, setCurrentHabit] = useState<HabitWithCompletions>();
 
   const {
     open: openCreateHabitModal,
@@ -55,7 +56,10 @@ function App() {
           key={habit.id}
           habit={habit}
           elementsCount={calculateElementsCount(windowWidth) * 7}
-          openHabitDetailsModal={openHabitDetailsModal}
+          openHabitDetailsModal={() => {
+            setCurrentHabit(habit);
+            openHabitDetailsModal();
+          }}
         />
       ))}
 
@@ -63,10 +67,16 @@ function App() {
         isOpen={isCreateHabitModalOpen}
         close={closeCreateHabitModal}
       />
-      <HabitDetailsModal
-        isOpen={isHabitDetailsModalOpen}
-        close={closeHabitDetailsModal}
-      />
+      {
+        <HabitDetailsModal
+          isOpen={isHabitDetailsModalOpen}
+          close={() => {
+            setCurrentHabit(undefined);
+            closeHabitDetailsModal();
+          }}
+          habit={currentHabit}
+        />
+      }
     </Wrapper>
   );
 }
