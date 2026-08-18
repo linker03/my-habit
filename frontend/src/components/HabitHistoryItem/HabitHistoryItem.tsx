@@ -1,8 +1,8 @@
-import { HabitHistoryItem as HabitHistoryItemType } from '../../api/generatedTypes';
+import { HabitCompletion } from '../../types/types';
 import styles from './HabitHistoryItem.module.css';
 
 interface HabitHistoryItemProps {
-  habitHistoryElement: HabitHistoryItemType;
+  habitHistoryElement: HabitCompletion;
   color: string;
 }
 
@@ -17,11 +17,12 @@ export const HabitHistoryItem = ({
         backgroundColor: color,
         opacity:
           calculateOpacity(
-            habitHistoryElement.completion_count,
-            habitHistoryElement.completion_frequency,
+            habitHistoryElement.completedCount,
+            habitHistoryElement.targetCount,
           ) + 0.1,
       }}
     />
   );
 };
+
 const calculateOpacity = (done: number, total: number) => done / total;

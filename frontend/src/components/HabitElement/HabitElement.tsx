@@ -1,12 +1,13 @@
-import habitHistoryData from 'mock/habitHistoryMock.json';
 import styles from './HabitElement.module.css';
 import { HabitHistoryItem } from 'components/HabitHistoryItem';
 import { Button } from 'components/ui-kit/Button';
-import { HabitHistoryItem as HabitHistoryItemType } from '../../api/generatedTypes';
-import { generateHabitHistoryByQuantity, getDateAfterDays } from 'mock/helpers';
-import type { HabitWithCompletions } from '../../types/types';
+import type { HabitCompletion, HabitWithCompletions } from '../../types/types';
 import { Icon } from 'components/ui-kit/Icon';
 import { setToday } from '../../api/habit';
+// import {
+//   generateHabitHistoryByQuantity,
+//   getDateAfterDays,
+// } from '../../helpers';
 
 interface HabitProps {
   habit: HabitWithCompletions;
@@ -23,7 +24,11 @@ export const HabitElement = ({
     setToday(habit.id, { value: 1 });
   };
 
-  const elementsToDisplay = prepareData(habitHistoryData, elementsCount);
+  const elementsToDisplay = buildHabitCompletionRange(
+    habit.days,
+    elementsCount,
+    { habitId: habit.id },
+  );
 
   return (
     <div className={styles.root}>
@@ -32,7 +37,11 @@ export const HabitElement = ({
           <Icon name={habit.icon} />
         </Button>
         <h4 className={styles.heading}>{habit.name}</h4>
-        <Button className={styles.doneButton} onClick={onComplete}>
+        <Button
+          className={styles.doneButton}
+          style={{ backgroundColor: habit.color }}
+          onClick={onComplete}
+        >
           <Icon name="plus" />
         </Button>
       </div>
@@ -49,27 +58,62 @@ export const HabitElement = ({
   );
 };
 
-const prepareData = (
-  habitHistoryData: HabitHistoryItemType[],
-  elementsCount: number,
-) => {
-  const firstElement = habitHistoryData[0];
-  const dayOfWeek = new Date(firstElement.date).getDay();
-  const daysLeft = 7 - dayOfWeek;
-  const futureDate = getDateAfterDays(new Date(firstElement.date), daysLeft);
-  const frequency = firstElement.completion_frequency;
+// приводим дату к локальной полуночи (00:00:00.000) без ухода в UTC
+function toLocalMidnight(d: Date): Date {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
 
-  const extraElements = generateHabitHistoryByQuantity({
-    quantity: daysLeft,
-    startDate: futureDate,
-    frequency,
-    completionCount: 0,
-  });
+// формируем ISO-подобную строку БЕЗ конвертации в UTC (без суффикса Z),
+// чтобы сохранить именно локальное "00:00:00" как записанное значение
+function toLocalIsoString(d: Date): string {
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T00:00:00.000`;
+}
 
-  const habitHistoryExtra = extraElements.concat(habitHistoryData);
-  const trimmedHabitHistory = habitHistoryExtra.filter(
-    (_item, index) => index < elementsCount,
-  );
+function buildHabitCompletionRange(
+  completions: HabitCompletion[],
+  targetLength: number,
+  options: { habitId: number; defaultTargetCount?: number; now?: Date },
+): HabitCompletion[] {
+  const { habitId, defaultTargetCount = 1, now = new Date() } = options;
 
-  return trimmedHabitHistory;
-};
+  const today = toLocalMidnight(now);
+  const dayOfWeek = today.getDay(); // 0=Sunday..6=Saturday, локальный день недели
+  const daysUntilSunday = (7 - dayOfWeek) % 7;
+
+  const end = new Date(today);
+  end.setDate(end.getDate() + daysUntilSunday);
+
+  const start = new Date(end);
+  start.setDate(start.getDate() - (targetLength - 1));
+
+  // индексируем исходные данные по локальной полуночи через timestamp
+  const byDate = new Map<number, HabitCompletion>();
+  for (const item of completions) {
+    const ts = toLocalMidnight(new Date(item.date)).getTime();
+    byDate.set(ts, item);
+  }
+
+  const result: HabitCompletion[] = [];
+  let syntheticId = -1;
+
+  const cursor = new Date(start);
+  for (let i = 0; i < targetLength; i++) {
+    const ts = cursor.getTime();
+    const existing = byDate.get(ts);
+
+    result.push(
+      existing ?? {
+        id: syntheticId--,
+        habitId,
+        date: toLocalIsoString(cursor),
+        targetCount: defaultTargetCount,
+        completedCount: 0,
+      },
+    );
+
+    cursor.setDate(cursor.getDate() + 1);
+  }
+
+  return result;
+}

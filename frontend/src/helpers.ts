@@ -1,22 +1,24 @@
+import { HabitCompletion } from './types/types';
+
 export function generateHabitHistoryByQuantity({
   quantity,
-  frequency = 3,
+  targetCount = 3,
   startDate = new Date(),
   completionCount,
+  habitId,
 }: {
   quantity: number;
-  frequency: number;
+  targetCount: number;
   startDate: Date;
   completionCount: number;
-}) {
-  const completion_frequency = frequency;
+  habitId: number;
+}): HabitCompletion[] {
   const habitItems = [];
 
   for (let i = 0; i < quantity; i++) {
     const id = i + Date.now();
 
-    const completion_count =
-      completionCount ?? getRandomNumber(0, completion_frequency);
+    const completedCount = completionCount ?? getRandomNumber(0, targetCount);
 
     const daysFromToday = daysToMiliseconds(i);
     const date = formatDate(new Date(startDate.valueOf() - daysFromToday));
@@ -24,8 +26,9 @@ export function generateHabitHistoryByQuantity({
     habitItems.push({
       id,
       date,
-      completion_count,
-      completion_frequency,
+      completedCount,
+      targetCount,
+      habitId,
     });
   }
 
