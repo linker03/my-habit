@@ -22,7 +22,7 @@ model Habit {
 model HabitCompletion {
   id             Int      @id @default(autoincrement())
   habitId        Int
-  date           DateTime
+  date           String 
   targetCount    Int
   completedCount Int      @default(0)
   habit          Habit    @relation(fields: [habitId], references: [id])

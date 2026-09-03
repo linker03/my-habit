@@ -1,6 +1,6 @@
 import { habitRepository } from '../repositories/habit.repository';
 import { BadRequestError, NotFoundError } from '@/errors';
-import { startOfDay } from '@/helpers/startOfDay';
+import { toDateString } from '@/helpers/toDateString';
 import { completionRepository } from '@/repositories/completion.repository';
 import { validatePeriod } from '@/helpers/validatePeriod';
 import { HabitCompletion, Habit } from '@/prisma/generated/prisma/client';
@@ -50,8 +50,8 @@ export const habitService = {
 
     const completions = await completionRepository.findByHabitsAndPeriod(
       habitIds,
-      from,
-      to,
+      toDateString(from),
+      toDateString(to),
     );
 
     // группируем completions по привычке
@@ -75,7 +75,11 @@ export const habitService = {
 
     await habitService.getHabitById(habitId);
 
-    return completionRepository.findByHabitAndPeriod(habitId, from, to);
+    return completionRepository.findByHabitAndPeriod(
+      habitId,
+      toDateString(from),
+      toDateString(to),
+    );
   },
 
   async setToday(habitId: number, value: number) {
@@ -85,7 +89,7 @@ export const habitService = {
 
     if (!habit) throw new NotFoundError('Habit not found');
 
-    const today = startOfDay(new Date());
+    const today = toDateString(new Date());
 
     return completionRepository.upsertCompletion(
       habitId,
@@ -102,7 +106,7 @@ export const habitService = {
 
     if (!habit) throw new NotFoundError('Habit not found');
 
-    const normalizedDate = startOfDay(date);
+    const normalizedDate = toDateString(date);
 
     return completionRepository.upsertCompletion(
       habitId,

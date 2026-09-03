@@ -2,7 +2,7 @@ import { prismaClient as prisma } from './prismaClient';
 
 export const completionRepository = {
   // получить completions привычек за период
-  findByHabitsAndPeriod(habitIds: number[], from: Date, to: Date) {
+  findByHabitsAndPeriod(habitIds: number[], from: string, to: string) {
     return prisma.habitCompletion.findMany({
       where: {
         habitId: { in: habitIds },
@@ -15,7 +15,7 @@ export const completionRepository = {
   },
 
   // получить completions одной привычки
-  findByHabitAndPeriod(habitId: number, from: Date, to: Date) {
+  findByHabitAndPeriod(habitId: number, from: string, to: string) {
     return prisma.habitCompletion.findMany({
       where: {
         habitId,
@@ -31,7 +31,7 @@ export const completionRepository = {
   // 🔥 главный метод — UPSERT completion
   upsertCompletion(
     habitId: number,
-    date: Date,
+    date: string,
     targetCount: number,
     completedCount: number,
   ) {
